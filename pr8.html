@@ -1,0 +1,80 @@
+// A. TypeScript - Introduction & Static Typing
+// To-Do List Application
+
+// Define the Task interface
+interface Task {
+    id: number;
+    title: string;
+    completed: boolean;
+}
+
+// Create an array of Task objects
+let tasks: Task[] = [];
+
+// Function to add a new task
+function addTask(title: string): void {
+    const newTask: Task = {
+        id: tasks.length + 1,
+        title: title,
+        completed: false
+    };
+
+    tasks.push(newTask);
+}
+
+// Function to mark a task as completed
+function completeTask(id: number): void {
+    const task: Task | undefined = tasks.find(
+        (task: Task): boolean => task.id === id
+    );
+
+    if (task) {
+        task.completed = true;
+    }
+}
+
+// Function to delete a task
+function deleteTask(id: number): void {
+    tasks = tasks.filter(
+        (task: Task): boolean => task.id !== id
+    );
+}
+
+// Function to display all tasks
+function displayTasks(): void {
+    console.log("----- TO-DO LIST -----");
+
+    tasks.forEach((task: Task): void => {
+        console.log(
+            task.id +
+            ". " +
+            task.title +
+            " - " +
+            (task.completed ? "Completed" : "Pending")
+        );
+    });
+
+    console.log("----------------------");
+}
+
+// Add tasks
+addTask("Learn TypeScript");
+addTask("Learn Interfaces");
+addTask("Practice Static Typing");
+
+// Display tasks
+displayTasks();
+
+// Complete task
+completeTask(1);
+
+console.log("\nAfter completing Task 1:");
+displayTasks();
+
+// Delete task
+deleteTask(2);
+
+console.log("\nAfter deleting Task 2:");
+displayTasks();
+
+      

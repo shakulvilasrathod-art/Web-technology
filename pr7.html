@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+</head>
+<body>
+
+  <h1>Weather App</h1>
+
+  <input type="text" id="cityInput" placeholder="Enter city name">
+  <button id="searchBtn">Search</button>
+
+  <p id="status"></p>
+
+  <div id="weather"></div>
+
+  <script>
+    const cityInput = document.getElementById("cityInput");
+    const searchBtn = document.getElementById("searchBtn");
+    const status = document.getElementById("status");
+    const weather = document.getElementById("weather");
+
+    async function getWeather(city) {
+      try {
+        status.textContent = "Loading...";
+        weather.innerHTML = "";
+
+        // Convert city name to latitude and longitude
+        const locationResponse = await fetch(
+          `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`
+        );
+
+        if (!locationResponse.ok) {
+          throw new Error("Unable to find location");
+        }
+
+        const locationData = await locationResponse.json();
+
+        if (!locationData.results || locationData.results.length === 0) {
+          throw new Error("City not found");
+        }
+
+        const location = locationData.results[0];
+
+        // Fetch weather using coordinates
+        const weatherResponse = await fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m`
+        );
+
+        if (!weatherResponse.ok) {
+          throw new Error("Unable to fetch weather data");
+        }
+
+        const weatherData = await weatherResponse.json();
+
+        const current = weatherData.current;
+
+        weather.innerHTML = `
+          <h2>${location.name}, ${location.country}</h2>
+          <p>Temperature: ${current.temperature_2m} °C</p>
+          <p>Humidity: ${current.relative_humidity_2m}%</p>
+          <p>Wind Speed: ${current.wind_speed_10m} km/h</p>
+        `;
+
+        status.textContent = "";
+
+      } catch (error) {
+        status.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    searchBtn.addEventListener("click", () => {
+      const city = cityInput.value.trim();
+
+      if (city === "") {
+        status.textContent = "Please enter a city name.";
+        return;
+      }
+
+      getWeather(city);
+    });
+  </script>
+
+</body>
+</html>

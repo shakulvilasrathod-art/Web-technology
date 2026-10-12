@@ -1,0 +1,30 @@
+
+
+git checkout -b practical-9
+git --version
+
+git config --global user.name "Shakul Vilas Rathod"
+git config --global user.email "your-email@gmail.com"
+
+git init
+
+git status
+
+git add .
+
+git commit -m "Initial commit"
+
+git remote add origin https://github.com/shakulvilasrathod-art/Web-technology
+
+git fetch origin
+
+
+git merge origin/main --allow-unrelated-histories
+
+git add README.md
+
+git commit -m "Merge remote main into practical-9"
+
+git push -u origin practical-9
+
+git status

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #27d924;
+            text-align: center;
+        }
+
+        .container {
+            width: 500px;
+            margin: 50px auto;
+            background: rgb(13, 60, 203);
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: #8ebd0f;
+        }
+
+        .product {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            margin: 8px;
+            background-color: #119090;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #29aea6;
+            color: rgb(19, 2, 2);
+        }
+
+        button:hover {
+            background-color: #b92396;
+        }
+
+        #total {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🛒 Shopping Cart</h1>
+
+    <div id="cart"></div>
+
+    <button onclick="addItem()">Add Hat</button>
+    <button onclick="removeItem()">Remove Pant</button>
+    <button onclick="calculateTotal()">Calculate Total</button>
+
+    <div id="total"></div>
+
+</div>
+
+<script>
+
+    let products = [
+        {
+            id: 1,
+            name: "Shirt",
+            price: 5000
+        },
+        {
+            id: 2,
+            name: "pant",
+            price: 1800
+        },
+        {
+            id: 3,
+            name: "Shoes",
+            price: 3500
+        },
+         {
+            id: 4,
+            name: "Sunglasses",
+            price: 800
+        }
+    ];
+
+  
+    function displayProducts() {
+
+        let output = products.map(function(product) {
+            return `
+                <div class="product">
+                    <span>${product.name}</span>
+                    <span>₹${product.price}</span>
+                </div>
+            `;
+        });
+
+        document.getElementById("cart").innerHTML = output.join("");
+    }
+
+   
+    function addItem() {
+
+        products.push({
+            id: 4,
+            name: "Hat",
+            price: 2000
+        });
+
+        displayProducts();
+    }
+
+    function removeItem() {
+
+        products = products.filter(function(product) {
+            return product.id != 2;
+        });
+
+        displayProducts();
+    }
+
+   
+    function calculateTotal() {
+
+        let total = products.reduce(function(sum, product) {
+            return sum + product.price;
+        }, 0);
+
+        document.getElementById("total").innerHTML =
+            "Total Price: ₹" + total;
+    }
+
+   
+    displayProducts();
+
+</script>
+
+</body>
+</html>
